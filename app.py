@@ -166,6 +166,30 @@ def render_disclaimer():
     """, unsafe_allow_html=True)
 
 
+def render_data_disclaimer():
+    """Render disclaimer about datasets from Kaggle."""
+    st.markdown("""
+        <div style="background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+                    border: 1px solid #0ea5e9; border-radius: 12px; padding: 1rem 1.5rem; margin: 1rem 0;">
+            <p style="color: #0369a1; font-size: 0.85rem; margin: 0;">
+                <strong>📊 Dataset Attribution:</strong> The datasets used in this application are sourced from
+                <a href="https://www.kaggle.com" target="_blank" style="color: #0284c7; text-decoration: underline;">Kaggle</a>,
+                a platform for public datasets and machine learning resources.
+            </p>
+            <ul style="color: #0369a1; font-size: 0.8rem; margin: 0.5rem 0 0 1rem; padding: 0;">
+                <li><strong>Diabetes:</strong> PIMA Indians Diabetes Dataset (CC0: Public Domain)</li>
+                <li><strong>Heart Disease:</strong> UCI Heart Disease Dataset (CC BY 4.0)</li>
+                <li><strong>Parkinson's:</strong> Parkinson's Disease Dataset (CC BY 4.0)</li>
+                <li><strong>Liver Disease:</strong> Indian Liver Patient Dataset (CC0: Public Domain)</li>
+            </ul>
+            <p style="color: #0369a1; font-size: 0.75rem; margin: 0.5rem 0 0 0; font-style: italic;">
+                These datasets are used for educational and research purposes only. All credit goes to the original dataset creators and contributors.
+                This application is not intended for commercial use.
+            </p>
+        </div>
+    """, unsafe_allow_html=True)
+
+
 def render_medindia_footer():
     """Render MedIndia footer on each page."""
     logo_html = get_logo_html("100px")
@@ -434,6 +458,7 @@ def render_home_page():
         """, unsafe_allow_html=True)
 
     render_disclaimer()
+    render_data_disclaimer()
     render_medindia_footer()
 
 
@@ -495,6 +520,7 @@ def render_diabetes_page():
     st.markdown("---")
     st.markdown(f"**Model:** {model_name} | **Accuracy:** {accuracy*100:.1f}%")
     render_disclaimer()
+    render_data_disclaimer()
     render_medindia_footer()
 
 
@@ -567,6 +593,7 @@ def render_heart_page():
     st.markdown("---")
     st.markdown(f"**Model:** {model_name} | **Accuracy:** {accuracy*100:.1f}%")
     render_disclaimer()
+    render_data_disclaimer()
     render_medindia_footer()
 
 
@@ -655,6 +682,7 @@ def render_parkinsons_page():
     st.markdown("---")
     st.markdown(f"**Model:** {model_name} | **Accuracy:** {accuracy*100:.1f}%")
     render_disclaimer()
+    render_data_disclaimer()
     render_medindia_footer()
 
 
@@ -719,6 +747,7 @@ def render_liver_page():
     st.markdown("---")
     st.markdown(f"**Model:** {model_name} | **Accuracy:** {accuracy*100:.1f}%")
     render_disclaimer()
+    render_data_disclaimer()
     render_medindia_footer()
 
 
