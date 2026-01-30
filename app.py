@@ -21,6 +21,46 @@ import plotly.graph_objects as go
 from pathlib import Path
 import base64
 import os
+import joblib
+
+
+# ============================================
+# LOGO UTILITY FUNCTION
+# ============================================
+
+def get_logo_base64():
+    """Get logo as base64 string for embedding in HTML."""
+    logo_paths = [
+        Path(__file__).parent / "assets" / "med.jpg",
+        Path("assets") / "med.jpg",
+        Path(__file__).parent / "med.jpg",
+        Path("med.jpg"),
+        # Also check for png version
+        Path(__file__).parent / "assets" / "med.png",
+        Path("assets") / "med.png",
+    ]
+
+    for logo_path in logo_paths:
+        if logo_path.exists():
+            with open(logo_path, "rb") as f:
+                # Determine image type
+                ext = logo_path.suffix.lower()
+                mime_type = "image/jpeg" if ext in [".jpg", ".jpeg"] else "image/png"
+                return base64.b64encode(f.read()).decode(), mime_type
+
+    return None, None
+
+
+def get_logo_html(max_width="150px"):
+    """Get HTML for logo - uses local file if available, otherwise URL."""
+    logo_base64, mime_type = get_logo_base64()
+
+    if logo_base64:
+        return f'<img src="data:{mime_type};base64,{logo_base64}" alt="MedIndia Logo" style="max-width: {max_width}; height: auto;">'
+    else:
+        # Fallback to URL if local file not found
+        return f'<img src="https://medindia.net/images/common/medindia-logo.png" alt="MedIndia Logo" style="max-width: {max_width}; height: auto;">'
+
 
 
 # ============================================
@@ -228,6 +268,22 @@ def get_data_path(filename):
     return Path("data") / filename
 
 
+def get_model_path(filename):
+    """Get path to model file - works locally and on Streamlit Cloud."""
+    possible_paths = [
+        Path(__file__).parent / "models" / filename,
+        Path(__file__).parent / filename,
+        Path("models") / filename,
+        Path(filename)
+    ]
+
+    for path in possible_paths:
+        if path.exists():
+            return path
+
+    return None
+
+
 # ============================================
 # DATA LOADING FUNCTIONS
 # ============================================
@@ -282,12 +338,41 @@ def load_liver_data():
 
 
 # ============================================
-# MODEL TRAINING FUNCTIONS
+# MODEL LOADING FUNCTIONS
 # ============================================
 
 @st.cache_resource(ttl=3600)
-def train_model(disease_type):
-    """Train and cache model for specified disease."""
+def load_model(disease_type):
+    """Load pre-trained model from .pkl files, or train if not found."""
+
+    model_path = get_model_path(f"{disease_type}_model.pkl")
+    scaler_path = get_model_path(f"{disease_type}_scaler.pkl")
+    info_path = get_model_path(f"{disease_type}_info.pkl")
+    features_path = get_model_path(f"{disease_type}_features.pkl")
+
+    # Try to load pre-trained model
+    if model_path and scaler_path and info_path and features_path:
+        try:
+            model = joblib.load(model_path)
+            scaler = joblib.load(scaler_path)
+            info = joblib.load(info_path)
+            feature_names = joblib.load(features_path)
+
+            model_name = info['model_name']
+            # Get accuracy from the best model's results
+            accuracy = info['results'][model_name]['cv_mean']
+
+            return model, scaler, model_name, accuracy, info['results'], feature_names
+        except Exception as e:
+            st.warning(f"Could not load pre-trained model: {e}. Training new model...")
+
+    # Fallback: Train model if pre-trained not found
+    return train_model_fallback(disease_type)
+
+
+@st.cache_resource(ttl=3600)
+def train_model_fallback(disease_type):
+    """Fallback: Train model if pre-trained models not found."""
 
     if disease_type == "diabetes":
         df = load_diabetes_data()
@@ -350,6 +435,12 @@ def train_model(disease_type):
             best_name = name
 
     return best_model, scaler, best_name, results[best_name]['accuracy'], results, feature_names
+
+
+# Alias for backward compatibility
+def train_model(disease_type):
+    """Alias for load_model - loads pre-trained or trains if needed."""
+    return load_model(disease_type)
 
 
 def make_prediction(model, scaler, features):
