@@ -132,7 +132,7 @@ def render_medindia_footer():
     st.markdown("""
         <div style="text-align: center; padding: 1rem; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
                     border-radius: 10px; margin-top: 1rem;">
-            <img src="https://medindia.net/images/common/medindia-logo.png"
+            <img src=""assets/.jpg""
                  alt="MedIndia Logo"
                  style="max-width: 100px; height: auto; margin-bottom: 0.5rem;">
             <p style="color: #1e3a5f; font-size: 0.85rem; margin: 0;">
@@ -339,7 +339,7 @@ def render_home_page():
     with col_logo:
         st.markdown("""
             <div style="text-align: center; padding: 1rem;">
-                <img src="https://medindia.net/images/common/medindia-logo.png"
+                <img src=""assets/.jpg""
                      alt="MedIndia Logo"
                      style="max-width: 150px; height: auto;">
             </div>
@@ -718,7 +718,7 @@ def main():
         # MedIndia Logo
         st.markdown("""
             <div style="text-align: center; padding: 1rem; background: white; border-radius: 10px; margin-bottom: 1rem;">
-                <img src="https://medindia.net/images/common/medindia-logo.png"
+                <img src=""assets/.jpg""
                      alt="MedIndia Logo"
                      style="max-width: 180px; height: auto;">
             </div>
