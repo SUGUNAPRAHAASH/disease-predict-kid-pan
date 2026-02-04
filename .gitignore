@@ -31,9 +31,9 @@ HealthPredictMVC/obj/
 models/*.keras
 models/*.json
 
-# Duplicate raw dataset directories
-kidney/
-Pancreatic-Cancer/
+# Duplicate raw dataset directories (root-level only)
+/kidney/
+/Pancreatic-Cancer/
 
 # Test files
 test_predictions.py

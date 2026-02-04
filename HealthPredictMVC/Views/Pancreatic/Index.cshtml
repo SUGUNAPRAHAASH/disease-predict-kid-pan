@@ -272,7 +272,7 @@
         <!-- Result Display -->
         @if (Model.Result != null)
         {
-            <div class="result-card @(Model.Result.Success ? (Model.Result.Prediction == 1 ? "positive" : "negative") : "error")">
+            <div id="results" class="result-card @(Model.Result.Success ? (Model.Result.Prediction == 1 ? "positive" : "negative") : "error")">
                 @if (Model.Result.Success)
                 {
                     <div class="result-header">
@@ -354,4 +354,12 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    @if (Model.Result != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "center" });
+            });
+        </script>
+    }
 }
