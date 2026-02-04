@@ -7,7 +7,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddHttpClient("FlaskAPI", client =>
 {
     client.BaseAddress = new Uri(builder.Configuration["FlaskApiUrl"] ?? "http://localhost:5000");
-    client.Timeout = TimeSpan.FromSeconds(30);
+    client.Timeout = TimeSpan.FromSeconds(120);
 });
 
 // Register the prediction service
