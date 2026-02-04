@@ -1,16 +1,14 @@
-# Test files (not needed for deployment)
-test_predictions.py
-
 # Python cache
 __pycache__/
 *.py[cod]
 *$py.class
 *.so
 
-# Virtual environment
+# Virtual environments
 venv/
 env/
 .venv/
+flask_api/venv/
 
 # IDE
 .vscode/
@@ -22,8 +20,20 @@ env/
 .DS_Store
 Thumbs.db
 
-# Model files (generated at runtime)
-models/*.pkl
-
 # Jupyter
 .ipynb_checkpoints/
+
+# .NET build artifacts
+HealthPredictMVC/bin/
+HealthPredictMVC/obj/
+
+# Old knee model (deprecated)
+models/*.keras
+models/*.json
+
+# Duplicate raw dataset directories
+kidney/
+Pancreatic-Cancer/
+
+# Test files
+test_predictions.py

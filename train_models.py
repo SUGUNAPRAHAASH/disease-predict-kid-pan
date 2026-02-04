@@ -242,6 +242,126 @@ def train_liver_model():
     return model, scaler
 
 
+def train_kidney_model():
+    """Train and save chronic kidney disease prediction model."""
+    print_header("CHRONIC KIDNEY DISEASE MODEL TRAINING")
+
+    # Load data
+    df = pd.read_csv(DATA_DIR / "kidney_disease.csv")
+    print(f"[DATA] Loaded {len(df)} records from kidney_disease.csv")
+
+    # Drop id column
+    if 'id' in df.columns:
+        df = df.drop('id', axis=1)
+
+    # Encode target
+    df['classification'] = df['classification'].map({'ckd': 1, 'notckd': 0})
+
+    # Encode categorical columns
+    categorical_maps = {
+        'rbc': {'normal': 1, 'abnormal': 0},
+        'pc': {'normal': 1, 'abnormal': 0},
+        'pcc': {'present': 1, 'notpresent': 0},
+        'ba': {'present': 1, 'notpresent': 0},
+        'htn': {'yes': 1, 'no': 0},
+        'dm': {'yes': 1, 'no': 0},
+        'cad': {'yes': 1, 'no': 0},
+        'appet': {'good': 1, 'poor': 0},
+        'pe': {'yes': 1, 'no': 0},
+        'ane': {'yes': 1, 'no': 0},
+    }
+
+    for col, mapping in categorical_maps.items():
+        if col in df.columns:
+            df[col] = df[col].str.strip().map(mapping)
+
+    # Convert all to numeric
+    for col in df.columns:
+        df[col] = pd.to_numeric(df[col], errors='coerce')
+
+    # Fill missing values
+    df = df.fillna(df.median(numeric_only=True))
+
+    # Split features and target
+    X = df.drop('classification', axis=1).values
+    y = df['classification'].values
+    feature_names = df.drop('classification', axis=1).columns.tolist()
+
+    # Train-test split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
+
+    # Train and get best model
+    model, scaler, model_name, results = train_and_evaluate_models(
+        X_train, X_test, y_train, y_test, "Chronic Kidney Disease"
+    )
+
+    # Save model and scaler
+    joblib.dump(model, MODELS_DIR / "kidney_model.pkl")
+    joblib.dump(scaler, MODELS_DIR / "kidney_scaler.pkl")
+    joblib.dump(feature_names, MODELS_DIR / "kidney_features.pkl")
+    joblib.dump({'model_name': model_name, 'results': results}, MODELS_DIR / "kidney_info.pkl")
+
+    print(f"[SAVED] kidney_model.pkl, kidney_scaler.pkl")
+
+    return model, scaler
+
+
+def train_pancreatic_model():
+    """Train and save pancreatic cancer prediction model."""
+    print_header("PANCREATIC CANCER MODEL TRAINING")
+
+    # Load data
+    df = pd.read_csv(DATA_DIR / "pancreatic_cancer.csv")
+    print(f"[DATA] Loaded {len(df)} records from pancreatic_cancer.csv")
+
+    # Drop post-diagnosis columns not available at prediction time
+    drop_cols = ['Country', 'Stage_at_Diagnosis', 'Survival_Time_Months', 'Treatment_Type']
+    df = df.drop(columns=[c for c in drop_cols if c in df.columns])
+
+    # Encode Gender
+    df['Gender'] = df['Gender'].map({'Male': 1, 'Female': 0})
+
+    # Encode ordinal categoricals
+    ordinal_map = {'Low': 0, 'Medium': 1, 'High': 2}
+    for col in ['Physical_Activity_Level', 'Diet_Processed_Food', 'Access_to_Healthcare']:
+        if col in df.columns:
+            df[col] = df[col].map(ordinal_map)
+
+    if 'Economic_Status' in df.columns:
+        df['Economic_Status'] = df['Economic_Status'].map({'Low': 0, 'Middle': 1, 'High': 2})
+
+    # Encode Urban_vs_Rural
+    if 'Urban_vs_Rural' in df.columns:
+        df['Urban_vs_Rural'] = df['Urban_vs_Rural'].map({'Urban': 1, 'Rural': 0})
+
+    # Split features and target
+    X = df.drop('Survival_Status', axis=1).values
+    y = df['Survival_Status'].values
+    feature_names = df.drop('Survival_Status', axis=1).columns.tolist()
+
+    # Train-test split
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42, stratify=y
+    )
+
+    # Train and get best model
+    model, scaler, model_name, results = train_and_evaluate_models(
+        X_train, X_test, y_train, y_test, "Pancreatic Cancer"
+    )
+
+    # Save model and scaler
+    joblib.dump(model, MODELS_DIR / "pancreatic_model.pkl")
+    joblib.dump(scaler, MODELS_DIR / "pancreatic_scaler.pkl")
+    joblib.dump(feature_names, MODELS_DIR / "pancreatic_features.pkl")
+    joblib.dump({'model_name': model_name, 'results': results}, MODELS_DIR / "pancreatic_info.pkl")
+
+    print(f"[SAVED] pancreatic_model.pkl, pancreatic_scaler.pkl")
+
+    return model, scaler
+
+
 def main():
     """Train all models."""
     print("\n" + "=" * 60)
@@ -254,6 +374,8 @@ def main():
     train_heart_model()
     train_parkinsons_model()
     train_liver_model()
+    train_kidney_model()
+    train_pancreatic_model()
 
     # Summary
     print("\n" + "=" * 60)

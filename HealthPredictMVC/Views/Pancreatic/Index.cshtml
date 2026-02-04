@@ -1,0 +1,357 @@
+@model PancreaticViewModel
+@{
+    ViewData["Title"] = "Pancreatic Cancer Risk Screening";
+}
+
+<!-- Page Header -->
+<section class="page-header">
+    <div class="container">
+        <div class="page-header-icon">
+            <i class="fas fa-ribbon"></i>
+        </div>
+        <h1>Pancreatic Cancer Risk Screening</h1>
+        <p class="mb-0" style="color: rgba(255,255,255,0.9);">
+            Evaluate risk based on lifestyle, symptoms, and medical history
+        </p>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Disease Overview -->
+    <div class="disease-overview">
+        <h2>
+            <i class="fas fa-info-circle" style="color: var(--primary-light);"></i>
+            About Pancreatic Cancer
+        </h2>
+        <p>
+            Pancreatic cancer begins in the tissues of the pancreas, an organ that produces digestive enzymes and hormones
+            regulating blood sugar. It is often detected late because symptoms appear gradually. Risk factors include smoking,
+            obesity, diabetes, chronic pancreatitis, and family history. Early screening based on risk factors can help
+            identify individuals who may benefit from closer monitoring.
+        </p>
+    </div>
+
+    <!-- Feature Explanations -->
+    <div class="feature-explanations">
+        <h3>
+            <i class="fas fa-clipboard-list me-2"></i>
+            Understanding the Risk Parameters
+        </h3>
+        <p class="text-secondary mb-4">
+            These lifestyle, symptom, and medical history parameters help assess your risk:
+        </p>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-smoking"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Smoking & Alcohol</div>
+                        <p class="feature-description">Smoking doubles pancreatic cancer risk. Heavy alcohol use can cause chronic pancreatitis, a risk factor.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-weight"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Obesity & Diabetes</div>
+                        <p class="feature-description">Obesity and diabetes are linked to increased pancreatic cancer risk through metabolic pathways.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-users"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Family History & Hereditary Conditions</div>
+                        <p class="feature-description">Genetic factors account for 5-10% of cases. BRCA2, PALB2, and other gene mutations increase risk.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-stomach"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Abdominal Discomfort & Back Pain</div>
+                        <p class="feature-description">Persistent abdominal pain radiating to the back can be an early symptom of pancreatic cancer.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-eye"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Jaundice & Weight Loss</div>
+                        <p class="feature-description">Yellowing of skin/eyes and unexplained weight loss are warning signs requiring immediate evaluation.</p>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon"><i class="fas fa-running"></i></div>
+                    <div class="feature-content">
+                        <div class="feature-name">Physical Activity & Diet</div>
+                        <p class="feature-description">Regular exercise and a diet low in processed foods are associated with reduced cancer risk.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prediction Form -->
+    <div class="prediction-form">
+        <h3>
+            <i class="fas fa-edit me-2"></i>
+            Enter Your Health & Lifestyle Parameters
+        </h3>
+
+        <form asp-action="Index" method="post">
+            @Html.AntiForgeryToken()
+
+            <h5 class="mt-3 mb-3"><i class="fas fa-user me-2"></i>Demographics & Lifestyle</h5>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="Input.Age" class="form-label">Age <span class="unit">(years)</span></label>
+                    <input asp-for="Input.Age" class="form-control" type="number" min="1" max="120" />
+                    <span asp-validation-for="Input.Age" class="validation-message"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Gender" class="form-label">Gender</label>
+                    <select asp-for="Input.Gender" class="form-control form-select">
+                        <option value="0">Female</option>
+                        <option value="1">Male</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.SmokingHistory" class="form-label">Smoking History</label>
+                    <select asp-for="Input.SmokingHistory" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Obesity" class="form-label">Obesity</label>
+                    <select asp-for="Input.Obesity" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.AlcoholConsumption" class="form-label">Alcohol Consumption</label>
+                    <select asp-for="Input.AlcoholConsumption" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.PhysicalActivityLevel" class="form-label">Physical Activity Level</label>
+                    <select asp-for="Input.PhysicalActivityLevel" class="form-control form-select">
+                        <option value="0">Low</option>
+                        <option value="1">Medium</option>
+                        <option value="2">High</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.DietProcessedFood" class="form-label">Processed Food in Diet</label>
+                    <select asp-for="Input.DietProcessedFood" class="form-control form-select">
+                        <option value="0">Low</option>
+                        <option value="1">Medium</option>
+                        <option value="2">High</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.UrbanVsRural" class="form-label">Residential Area</label>
+                    <select asp-for="Input.UrbanVsRural" class="form-control form-select">
+                        <option value="0">Rural</option>
+                        <option value="1">Urban</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.EconomicStatus" class="form-label">Economic Status</label>
+                    <select asp-for="Input.EconomicStatus" class="form-control form-select">
+                        <option value="0">Low</option>
+                        <option value="1">Middle</option>
+                        <option value="2">High</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.AccessToHealthcare" class="form-label">Access to Healthcare</label>
+                    <select asp-for="Input.AccessToHealthcare" class="form-control form-select">
+                        <option value="0">Low</option>
+                        <option value="1">Medium</option>
+                        <option value="2">High</option>
+                    </select>
+                </div>
+            </div>
+
+            <h5 class="mt-4 mb-3"><i class="fas fa-notes-medical me-2"></i>Medical History & Symptoms</h5>
+            <div class="form-grid">
+                <div class="form-group">
+                    <label asp-for="Input.Diabetes" class="form-label">Diabetes</label>
+                    <select asp-for="Input.Diabetes" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.ChronicPancreatitis" class="form-label">Chronic Pancreatitis</label>
+                    <select asp-for="Input.ChronicPancreatitis" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.FamilyHistory" class="form-label">Family History of Cancer</label>
+                    <select asp-for="Input.FamilyHistory" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.HereditaryCondition" class="form-label">Hereditary Condition</label>
+                    <select asp-for="Input.HereditaryCondition" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Jaundice" class="form-label">Jaundice</label>
+                    <select asp-for="Input.Jaundice" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.AbdominalDiscomfort" class="form-label">Abdominal Discomfort</label>
+                    <select asp-for="Input.AbdominalDiscomfort" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.BackPain" class="form-label">Back Pain</label>
+                    <select asp-for="Input.BackPain" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.WeightLoss" class="form-label">Unexplained Weight Loss</label>
+                    <select asp-for="Input.WeightLoss" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.DevelopmentType2Diabetes" class="form-label">Development of Type 2 Diabetes</label>
+                    <select asp-for="Input.DevelopmentType2Diabetes" class="form-control form-select">
+                        <option value="0">No</option>
+                        <option value="1">Yes</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="text-center mt-4">
+                <button type="submit" class="btn-predict">
+                    <i class="fas fa-ribbon"></i>
+                    Analyze Cancer Risk
+                </button>
+            </div>
+        </form>
+
+        <!-- Result Display -->
+        @if (Model.Result != null)
+        {
+            <div class="result-card @(Model.Result.Success ? (Model.Result.Prediction == 1 ? "positive" : "negative") : "error")">
+                @if (Model.Result.Success)
+                {
+                    <div class="result-header">
+                        <div class="result-icon">
+                            @if (Model.Result.Prediction == 1)
+                            {
+                                <i class="fas fa-exclamation-triangle"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-check-circle"></i>
+                            }
+                        </div>
+                        <div>
+                            <h3 class="result-title">
+                                @(Model.Result.Prediction == 1 ? "Elevated Pancreatic Cancer Risk" : "Low Pancreatic Cancer Risk")
+                            </h3>
+                            <span class="risk-badge @Model.Result.RiskLevel.ToLower()">
+                                @Model.Result.RiskLevel Risk
+                            </span>
+                        </div>
+                    </div>
+
+                    <p>@Model.Result.Message</p>
+
+                    <div class="result-details">
+                        <div class="result-metric">
+                            <div class="result-metric-label">Confidence</div>
+                            <div class="result-metric-value">
+                                @if (Model.Result.Prediction == 0)
+                                {
+                                    @((100 - Model.Result.Probability).ToString("F1"))@:%
+                                }
+                                else
+                                {
+                                    @Model.Result.Probability.ToString("F1")@:%
+                                }
+                            </div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="result-metric-label">Risk Level</div>
+                            <div class="result-metric-value">@Model.Result.RiskLevel</div>
+                        </div>
+                        <div class="result-metric">
+                            <div class="result-metric-label">Assessment</div>
+                            <div class="result-metric-value">Oncology</div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="result-header">
+                        <div class="result-icon" style="background: var(--warning-yellow);">
+                            <i class="fas fa-exclamation-circle"></i>
+                        </div>
+                        <div>
+                            <h3 class="result-title" style="color: var(--warning-yellow);">Analysis Error</h3>
+                        </div>
+                    </div>
+                    <p>@Model.Result.Error</p>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Medical Disclaimer -->
+    <div class="medical-disclaimer">
+        <div class="medical-disclaimer-title">
+            <i class="fas fa-exclamation-triangle"></i>
+            Medical Disclaimer
+        </div>
+        <p>
+            This pancreatic cancer screening provides informational insights only and is <strong>not a medical diagnosis</strong>.
+            The results are based on machine learning analysis of the Pancreatic Cancer Prediction Dataset. Please consult an
+            oncologist or gastroenterologist for proper evaluation and screening recommendations.
+        </p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

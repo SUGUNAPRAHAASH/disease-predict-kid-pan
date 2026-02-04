@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: organ-predict-api
+    runtime: python
+    buildCommand: pip install -r flask_api/requirements.txt
+    startCommand: cd flask_api && gunicorn app:app --bind 0.0.0.0:$PORT --workers 2 --timeout 120
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+    plan: free
