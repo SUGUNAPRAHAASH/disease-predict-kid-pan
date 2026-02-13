@@ -112,7 +112,7 @@ a:hover {
 }
 
 .navbar-brand img {
-    height: 42px;
+    height: 52px;
     width: auto;
     background: white;
     padding: 4px 12px;
@@ -137,6 +137,20 @@ a:hover {
 .navbar-nav .nav-link.active {
     background-color: rgba(255, 255, 255, 0.15);
     color: white !important;
+}
+
+.navbar .dropdown-menu {
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    border-radius: var(--radius-md);
+}
+
+.navbar .dropdown-item {
+    font-weight: 500;
+}
+
+.navbar .dropdown-item:active {
+    background-color: var(--primary-light);
 }
 
 .navbar-toggler {
@@ -229,14 +243,12 @@ a:hover {
 /* Card Color Variants */
 .disease-card.diabetes::before { background: var(--danger-red); }
 .disease-card.heart::before { background: #ec4899; }
-.disease-card.parkinsons::before { background: #8b5cf6; }
 .disease-card.liver::before { background: var(--success-green); }
 .disease-card.kidney::before { background: #06b6d4; }
 .disease-card.pancreatic::before { background: #f97316; }
 
 .disease-card:hover.diabetes { border-color: var(--danger-red); }
 .disease-card:hover.heart { border-color: #ec4899; }
-.disease-card:hover.parkinsons { border-color: #8b5cf6; }
 .disease-card:hover.liver { border-color: var(--success-green); }
 .disease-card:hover.kidney { border-color: #06b6d4; }
 .disease-card:hover.pancreatic { border-color: #f97316; }
@@ -254,10 +266,36 @@ a:hover {
 
 .disease-card.diabetes .disease-card-icon { background: var(--danger-light); color: var(--danger-red); }
 .disease-card.heart .disease-card-icon { background: #fce7f3; color: #ec4899; }
-.disease-card.parkinsons .disease-card-icon { background: #ede9fe; color: #8b5cf6; }
 .disease-card.liver .disease-card-icon { background: var(--success-light); color: var(--success-green); }
 .disease-card.kidney .disease-card-icon { background: #cffafe; color: #06b6d4; }
 .disease-card.pancreatic .disease-card-icon { background: #fff7ed; color: #f97316; }
+
+.disease-card.pancreas-group::before { background: #f97316; }
+.disease-card.pancreas-group .disease-card-icon { background: #fff7ed; color: #f97316; }
+
+.pancreas-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.pancreas-links .disease-card-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #fed7aa;
+    border-radius: var(--radius-md);
+    padding: 0.6rem 0.85rem;
+    color: #9a3412;
+    background: #fff7ed;
+    font-weight: 600;
+}
+
+.pancreas-links .disease-card-link:hover {
+    color: #7c2d12;
+    border-color: #fdba74;
+    background: #ffedd5;
+}
 
 .disease-card-title {
     font-size: 1.25rem;

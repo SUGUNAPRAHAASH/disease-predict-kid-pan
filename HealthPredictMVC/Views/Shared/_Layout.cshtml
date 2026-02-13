@@ -28,21 +28,9 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Diabetes" ? "active" : "")"
-                           asp-controller="Diabetes" asp-action="Index">
-                            <i class="fas fa-tint me-1"></i> Diabetes
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "HeartDisease" ? "active" : "")"
-                           asp-controller="HeartDisease" asp-action="Index">
-                            <i class="fas fa-heart me-1"></i> Heart Disease
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Parkinsons" ? "active" : "")"
-                           asp-controller="Parkinsons" asp-action="Index">
-                            <i class="fas fa-brain me-1"></i> Parkinson's
+                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Kidney" ? "active" : "")"
+                           asp-controller="Kidney" asp-action="Index">
+                            <i class="fas fa-kidneys me-1"></i> Kidney Disease
                         </a>
                     </li>
                     <li class="nav-item">
@@ -52,16 +40,31 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Kidney" ? "active" : "")"
-                           asp-controller="Kidney" asp-action="Index">
-                            <i class="fas fa-kidneys me-1"></i> Kidney Disease
+                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "HeartDisease" ? "active" : "")"
+                           asp-controller="HeartDisease" asp-action="Index">
+                            <i class="fas fa-heart me-1"></i> Heart Disease
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link @(ViewContext.RouteData.Values["controller"]?.ToString() == "Pancreatic" ? "active" : "")"
-                           asp-controller="Pancreatic" asp-action="Index">
-                            <i class="fas fa-ribbon me-1"></i> Pancreatic Cancer
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle @((ViewContext.RouteData.Values["controller"]?.ToString() == "Diabetes" || ViewContext.RouteData.Values["controller"]?.ToString() == "Pancreatic") ? "active" : "")"
+                           href="#"
+                           role="button"
+                           data-bs-toggle="dropdown"
+                           aria-expanded="false">
+                            <i class="fas fa-staff-snake me-1"></i> Pancreas
                         </a>
+                        <ul class="dropdown-menu dropdown-menu-end">
+                            <li>
+                                <a class="dropdown-item" asp-controller="Diabetes" asp-action="Index">
+                                    <i class="fas fa-tint me-2"></i>Diabetic
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" asp-controller="Pancreatic" asp-action="Index">
+                                    <i class="fas fa-ribbon me-2"></i>Pancreatic Cancer
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>

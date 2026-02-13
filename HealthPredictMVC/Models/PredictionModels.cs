@@ -113,105 +113,6 @@ namespace HealthPredictMVC.Models
     }
 
     /// <summary>
-    /// Parkinson's Disease Screening Input Model
-    /// </summary>
-    public class ParkinsonsInput
-    {
-        // Frequency Parameters
-        [Display(Name = "MDVP:Fo (Hz) - Average Vocal Frequency")]
-        [Range(50, 300, ErrorMessage = "MDVP:Fo must be between 50 and 300 Hz")]
-        public double MDVP_Fo { get; set; } = 120;
-
-        [Display(Name = "MDVP:Fhi (Hz) - Maximum Vocal Frequency")]
-        [Range(50, 600, ErrorMessage = "MDVP:Fhi must be between 50 and 600 Hz")]
-        public double MDVP_Fhi { get; set; } = 150;
-
-        [Display(Name = "MDVP:Flo (Hz) - Minimum Vocal Frequency")]
-        [Range(50, 300, ErrorMessage = "MDVP:Flo must be between 50 and 300 Hz")]
-        public double MDVP_Flo { get; set; } = 100;
-
-        // Jitter Parameters
-        [Display(Name = "MDVP:Jitter (%) - Frequency Variation")]
-        [Range(0, 2, ErrorMessage = "Jitter must be between 0 and 2%")]
-        public double MDVP_Jitter_Percent { get; set; } = 0.005;
-
-        [Display(Name = "MDVP:Jitter (Abs) - Absolute Jitter")]
-        [Range(0, 0.001, ErrorMessage = "Absolute Jitter must be between 0 and 0.001")]
-        public double MDVP_Jitter_Abs { get; set; } = 0.00003;
-
-        [Display(Name = "MDVP:RAP - Relative Average Perturbation")]
-        [Range(0, 0.1, ErrorMessage = "RAP must be between 0 and 0.1")]
-        public double MDVP_RAP { get; set; } = 0.003;
-
-        [Display(Name = "MDVP:PPQ - Period Perturbation Quotient")]
-        [Range(0, 0.1, ErrorMessage = "PPQ must be between 0 and 0.1")]
-        public double MDVP_PPQ { get; set; } = 0.003;
-
-        [Display(Name = "Jitter:DDP - Differential Jitter")]
-        [Range(0, 0.1, ErrorMessage = "DDP must be between 0 and 0.1")]
-        public double Jitter_DDP { get; set; } = 0.008;
-
-        // Shimmer Parameters
-        [Display(Name = "MDVP:Shimmer - Amplitude Variation")]
-        [Range(0, 0.2, ErrorMessage = "Shimmer must be between 0 and 0.2")]
-        public double MDVP_Shimmer { get; set; } = 0.03;
-
-        [Display(Name = "MDVP:Shimmer (dB)")]
-        [Range(0, 2, ErrorMessage = "Shimmer dB must be between 0 and 2")]
-        public double MDVP_Shimmer_dB { get; set; } = 0.3;
-
-        [Display(Name = "Shimmer:APQ3")]
-        [Range(0, 0.1, ErrorMessage = "APQ3 must be between 0 and 0.1")]
-        public double Shimmer_APQ3 { get; set; } = 0.015;
-
-        [Display(Name = "Shimmer:APQ5")]
-        [Range(0, 0.2, ErrorMessage = "APQ5 must be between 0 and 0.2")]
-        public double Shimmer_APQ5 { get; set; } = 0.02;
-
-        [Display(Name = "MDVP:APQ")]
-        [Range(0, 0.2, ErrorMessage = "APQ must be between 0 and 0.2")]
-        public double MDVP_APQ { get; set; } = 0.025;
-
-        [Display(Name = "Shimmer:DDA")]
-        [Range(0, 0.2, ErrorMessage = "DDA must be between 0 and 0.2")]
-        public double Shimmer_DDA { get; set; } = 0.045;
-
-        // Noise Parameters
-        [Display(Name = "NHR - Noise-to-Harmonics Ratio")]
-        [Range(0, 1, ErrorMessage = "NHR must be between 0 and 1")]
-        public double NHR { get; set; } = 0.025;
-
-        [Display(Name = "HNR - Harmonics-to-Noise Ratio")]
-        [Range(0, 40, ErrorMessage = "HNR must be between 0 and 40")]
-        public double HNR { get; set; } = 22;
-
-        // Nonlinear Parameters
-        [Display(Name = "RPDE - Recurrence Period Density Entropy")]
-        [Range(0, 1, ErrorMessage = "RPDE must be between 0 and 1")]
-        public double RPDE { get; set; } = 0.5;
-
-        [Display(Name = "DFA - Detrended Fluctuation Analysis")]
-        [Range(0, 1, ErrorMessage = "DFA must be between 0 and 1")]
-        public double DFA { get; set; } = 0.7;
-
-        [Display(Name = "Spread1")]
-        [Range(-10, 0, ErrorMessage = "Spread1 must be between -10 and 0")]
-        public double Spread1 { get; set; } = -5;
-
-        [Display(Name = "Spread2")]
-        [Range(0, 1, ErrorMessage = "Spread2 must be between 0 and 1")]
-        public double Spread2 { get; set; } = 0.2;
-
-        [Display(Name = "D2 - Correlation Dimension")]
-        [Range(0, 5, ErrorMessage = "D2 must be between 0 and 5")]
-        public double D2 { get; set; } = 2.5;
-
-        [Display(Name = "PPE - Pitch Period Entropy")]
-        [Range(0, 1, ErrorMessage = "PPE must be between 0 and 1")]
-        public double PPE { get; set; } = 0.2;
-    }
-
-    /// <summary>
     /// Liver Health Analysis Input Model
     /// </summary>
     public class LiverInput
@@ -272,11 +173,6 @@ namespace HealthPredictMVC.Models
         public PredictionResult? Result { get; set; }
     }
 
-    public class ParkinsonsViewModel
-    {
-        public ParkinsonsInput Input { get; set; } = new ParkinsonsInput();
-        public PredictionResult? Result { get; set; }
-    }
 
     public class LiverViewModel
     {

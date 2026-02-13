@@ -5,7 +5,6 @@ HealthPredict AI by MedIndia
 This API provides endpoints for:
 - Diabetes Risk Assessment
 - Heart Disease Check
-- Parkinson's Screening
 - Liver Health Analysis
 - Chronic Kidney Disease Assessment
 - Pancreatic Cancer Screening
@@ -22,7 +21,6 @@ from sklearn.model_selection import train_test_split, cross_val_score
 from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier, GradientBoostingClassifier
-from sklearn.svm import SVC
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for ASP.NET Core frontend
@@ -88,17 +86,6 @@ def load_heart_data():
         df['Heart Disease'] = df['Heart Disease'].map({'Presence': 1, 'Absence': 0})
         if df['Heart Disease'].isna().any():
             df['Heart Disease'] = pd.to_numeric(df['Heart Disease'], errors='coerce')
-
-    return df
-
-
-def load_parkinsons_data():
-    """Load and preprocess Parkinson's dataset."""
-    df = pd.read_csv(os.path.join(DATA_DIR, 'parkinsons.csv'))
-
-    # Remove name column if present
-    if 'name' in df.columns:
-        df = df.drop('name', axis=1)
 
     return df
 
@@ -188,9 +175,6 @@ def train_model_fallback(disease_type):
     elif disease_type == 'heart':
         df = load_heart_data()
         target_col = 'Heart Disease'
-    elif disease_type == 'parkinsons':
-        df = load_parkinsons_data()
-        target_col = 'status'
     elif disease_type == 'liver':
         df = load_liver_data()
         target_col = 'Dataset'
@@ -222,10 +206,6 @@ def train_model_fallback(disease_type):
         'Random Forest': RandomForestClassifier(n_estimators=100, random_state=42),
         'Gradient Boosting': GradientBoostingClassifier(n_estimators=100, random_state=42)
     }
-
-    # Add SVM for Parkinson's
-    if disease_type == 'parkinsons':
-        models['SVM'] = SVC(kernel='rbf', probability=True, random_state=42)
 
     best_model = None
     best_score = 0
@@ -427,54 +407,6 @@ def predict_heart():
         }), 500
 
 
-@app.route('/api/parkinsons/predict', methods=['POST'])
-def predict_parkinsons():
-    """
-    Parkinson's Disease Screening API
-
-    Expected JSON body with 22 voice biomarker parameters.
-    """
-    try:
-        data = request.get_json()
-
-        # Validate required fields
-        required_fields = [
-            'MDVP:Fo(Hz)', 'MDVP:Fhi(Hz)', 'MDVP:Flo(Hz)', 'MDVP:Jitter(%)',
-            'MDVP:Jitter(Abs)', 'MDVP:RAP', 'MDVP:PPQ', 'Jitter:DDP',
-            'MDVP:Shimmer', 'MDVP:Shimmer(dB)', 'Shimmer:APQ3', 'Shimmer:APQ5',
-            'MDVP:APQ', 'Shimmer:DDA', 'NHR', 'HNR', 'RPDE', 'DFA',
-            'spread1', 'spread2', 'D2', 'PPE'
-        ]
-
-        for field in required_fields:
-            if field not in data:
-                return jsonify({
-                    'success': False,
-                    'error': f'Missing required field: {field}'
-                }), 400
-
-        # Make prediction
-        prediction, probability = make_prediction('parkinsons', data)
-        risk_level = get_risk_level(prediction, probability)
-
-        return jsonify({
-            'success': True,
-            'prediction': prediction,
-            'probability': round(probability * 100, 2),
-            'risk_level': risk_level,
-            'message': "Voice patterns suggest potential Parkinson's indicators. Consult a neurologist."
-                      if prediction == 1
-                      else "Voice patterns appear normal. No Parkinson's indicators detected.",
-            'disease': "Parkinson's Disease"
-        })
-
-    except Exception as e:
-        return jsonify({
-            'success': False,
-            'error': str(e)
-        }), 500
-
-
 @app.route('/api/liver/predict', methods=['POST'])
 def predict_liver():
     """
@@ -535,7 +467,7 @@ def predict_liver():
 @app.route('/api/model/info/<disease_type>', methods=['GET'])
 def get_model_info(disease_type):
     """Get information about a specific model."""
-    valid_types = ['diabetes', 'heart', 'parkinsons', 'liver', 'kidney', 'pancreatic']
+    valid_types = ['diabetes', 'heart', 'liver', 'kidney', 'pancreatic']
 
     if disease_type not in valid_types:
         return jsonify({
@@ -672,7 +604,7 @@ def predict_pancreatic():
 if __name__ == '__main__':
     # Pre-load all models on startup
     print("Loading models...")
-    for disease in ['diabetes', 'heart', 'parkinsons', 'liver', 'kidney', 'pancreatic']:
+    for disease in ['diabetes', 'heart', 'liver', 'kidney', 'pancreatic']:
         try:
             load_model(disease)
             print(f"  - {disease} model loaded successfully")
