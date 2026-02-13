@@ -8,7 +8,6 @@ namespace HealthPredictMVC.Services
     {
         Task<PredictionResult> PredictDiabetesAsync(DiabetesInput input);
         Task<PredictionResult> PredictHeartDiseaseAsync(HeartDiseaseInput input);
-        Task<PredictionResult> PredictParkinsonsAsync(ParkinsonsInput input);
         Task<PredictionResult> PredictLiverAsync(LiverInput input);
         Task<PredictionResult> PredictKidneyAsync(KidneyInput input);
         Task<PredictionResult> PredictPancreaticAsync(PancreaticInput input);
@@ -151,69 +150,6 @@ namespace HealthPredictMVC.Services
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error predicting heart disease");
-                return new PredictionResult
-                {
-                    Success = false,
-                    Error = $"Error connecting to prediction service: {ex.Message}"
-                };
-            }
-        }
-
-        public async Task<PredictionResult> PredictParkinsonsAsync(ParkinsonsInput input)
-        {
-            try
-            {
-                var client = GetClient();
-
-                var requestData = new Dictionary<string, object>
-                {
-                    { "MDVP:Fo(Hz)", input.MDVP_Fo },
-                    { "MDVP:Fhi(Hz)", input.MDVP_Fhi },
-                    { "MDVP:Flo(Hz)", input.MDVP_Flo },
-                    { "MDVP:Jitter(%)", input.MDVP_Jitter_Percent },
-                    { "MDVP:Jitter(Abs)", input.MDVP_Jitter_Abs },
-                    { "MDVP:RAP", input.MDVP_RAP },
-                    { "MDVP:PPQ", input.MDVP_PPQ },
-                    { "Jitter:DDP", input.Jitter_DDP },
-                    { "MDVP:Shimmer", input.MDVP_Shimmer },
-                    { "MDVP:Shimmer(dB)", input.MDVP_Shimmer_dB },
-                    { "Shimmer:APQ3", input.Shimmer_APQ3 },
-                    { "Shimmer:APQ5", input.Shimmer_APQ5 },
-                    { "MDVP:APQ", input.MDVP_APQ },
-                    { "Shimmer:DDA", input.Shimmer_DDA },
-                    { "NHR", input.NHR },
-                    { "HNR", input.HNR },
-                    { "RPDE", input.RPDE },
-                    { "DFA", input.DFA },
-                    { "spread1", input.Spread1 },
-                    { "spread2", input.Spread2 },
-                    { "D2", input.D2 },
-                    { "PPE", input.PPE }
-                };
-
-                var json = JsonSerializer.Serialize(requestData);
-                var content = new StringContent(json, Encoding.UTF8, "application/json");
-
-                var response = await client.PostAsync("/api/parkinsons/predict", content);
-                var responseContent = await response.Content.ReadAsStringAsync();
-
-                if (response.IsSuccessStatusCode)
-                {
-                    var result = JsonSerializer.Deserialize<PredictionResult>(responseContent, _jsonOptions);
-                    return result ?? new PredictionResult { Success = false, Error = "Failed to parse response" };
-                }
-                else
-                {
-                    return new PredictionResult
-                    {
-                        Success = false,
-                        Error = $"API returned status code: {response.StatusCode}"
-                    };
-                }
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Error predicting Parkinson's");
                 return new PredictionResult
                 {
                     Success = false,
